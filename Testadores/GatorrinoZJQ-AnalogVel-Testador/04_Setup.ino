@@ -1,6 +1,13 @@
 void setup() {
   Serial.begin(9600);
-
+  trigger.li[0] = 9500;
+  trigger.li[1] = 3000;
+  trigger.ls[0] = 12000;
+  trigger.ls[1] = 5000;
+  trigger.ti[0] = 15000;
+  trigger.ts[0] = 1000;
+  trigger.ti[1] = 12000;
+  trigger.ts[1] = 1700;
 
   pinMode(LED_BUILTIN, OUTPUT);
 
@@ -30,19 +37,13 @@ void setup() {
   // }
 
 //   for (byte i = 0; i < 19; i++){
-//     Notas[i].begin();
+//     botoes[i].begin();
 // //    Gatilhos[i].invert();
-//   }
-
-//   for (byte i = 0; i < 7; i++){
-//     bMux[i].begin();
-// //    Gatilhos[i].invert();
-//   }
-
+  }
 
 //   for (byte i = 0; i < GAT_QTD; i++){
 //     Gatilhos[i].begin();
 // //    Gatilhos[i].invert();
     
   // }  
-}
+// }
