@@ -1,6 +1,7 @@
 void setup() {
   Serial.begin(9600);
 
+// Trigger aqui sào os sensores do "strummer"
   trigger.li[0] = 15000;
   trigger.li[1] = 15450;
   trigger.ls[0] = 13700;
@@ -9,6 +10,16 @@ void setup() {
   trigger.ts[0] = 2000;
   trigger.ti[1] = 50000;
   trigger.ts[1] = 2000;
+
+// Cabrito = sensores feitos com o controle de X-BOX 360
+  cabrito.li[0] = 9500;
+  cabrito.li[1] = 3000;
+  cabrito.ls[0] = 12000;
+  cabrito.ls[1] = 5000;
+  cabrito.ti[0] = 15000;
+  cabrito.ts[0] = 1000;
+  cabrito.ti[1] = 12000;
+  cabrito.ts[1] = 1700;
 
   pinMode(LED_BUILTIN, OUTPUT);
 
@@ -32,6 +43,8 @@ void setup() {
   gatilhos[2].map(Anlg_Map7);
   gatilhos[3].map(Anlg_Map8);
   gatilhos[4].map(Anlg_Map9);
+  gatilhos[5].map(Anlg_Map10);
+  gatilhos[6].map(Anlg_Map11);  
 
   for (byte j = 0; j < GATILHOS_QTD; j++){
     Vel[j] = 0;

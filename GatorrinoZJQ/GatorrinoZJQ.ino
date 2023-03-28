@@ -3,12 +3,18 @@
 
 USBMIDI_Interface midi;
 
+#define CAB0_MIN 0
+#define CAB0_MAX 16383
+#define CAB1_MIN 0
+#define CAB1_MAX 16383
+
+
 // Multiplexadores
 
 CD74HC4051 mux3 {5, {15, 14, 16}}; // Digitais (seletores e botões da ponte)
 CD74HC4051 mux2 {A7, {15, 14, 16}}; // Analogs 1
 CD74HC4051 mux1 {7, {15, 14, 16}}; // Digitais (seletores e botões da ponte)
-CD74HC4051 mux4 {A8, {15, 14, 16}}; // Analogs (multiplexador adicional)
+CD74HC4051 mux4 {A8, {15, 14, 16}}; // Analogs (multiplexador adicional): nele estão os sensores do pé-de-cabrito.
 
 // Botões de Nota
 
@@ -76,11 +82,11 @@ CCPotentiometer CC_Pot[] {
     { mux2.pin(7), {MIDI_CC::Sound_Controller_5, CHANNEL_1} },
 };
 
-#define GATILHOS_QTD 5
-#define GATILHOS_MODOS 0, 0, 1, 1, 1
+#define GATILHOS_QTD 7
+#define GATILHOS_MODOS 0, 0, 1, 1, 1, 0, 0
 #define GATILHOS_INV 1, 1, 0, 0, 1
 #define GATILHOS_MARGEM 600, 800, 400, 400, 400
-#define GATILHOS_CHN CHANNEL_1, CHANNEL_5, CHANNEL_2, CHANNEL_3, CHANNEL_4
+#define GATILHOS_CHN CHANNEL_1, CHANNEL_5, CHANNEL_2, CHANNEL_3, CHANNEL_4, CHANNEL_6, CHANNEL_7
 #define GATILHOS_TEMPO 1000, 1000, 1, 1, 1
 
 CCPotentiometer gatilhos[] {
@@ -88,10 +94,13 @@ CCPotentiometer gatilhos[] {
     { mux2.pin(1), {MIDI_CC::Sound_Controller_7, CHANNEL_1} },
     { A6, {MIDI_CC::Sound_Controller_8, CHANNEL_1} }, // Pedais
     { A9, {MIDI_CC::Sound_Controller_9, CHANNEL_1} },
-    { mux2.pin(2), {MIDI_CC::Sound_Controller_10, CHANNEL_1}} // Whammy Bar
+    { mux2.pin(2), {MIDI_CC::Sound_Controller_10, CHANNEL_1}}, // Whammy Bar
+    { mux4.pin(0), {0x1C, CHANNEL_1} }, // Bola 1 do saco-de-cachorro
+    { mux4.pin(1), {0x1D, CHANNEL_1} }, // Bola 2 do saco-de-cachorro
 };
 
 AnalogVelDuplo trigger;
+AnalogVelDuplo cabrito; //Pé-de-Cabrito!
 
 // Definições
 
@@ -201,5 +210,19 @@ analog_t Anlg_Map9(analog_t raw){
     // make sure that the analog value is between the minimum and maximum
     raw = constrain(raw, ANLG9_MIN, ANLG9_MAX);
     raw = map(raw, ANLG9_MIN, ANLG9_MAX, 16383, 0);
+    return constrain(raw, 0, 16383);
+}
+
+analog_t Anlg_Map10(analog_t raw){
+    // make sure that the analog value is between the minimum and maximum
+    raw = constrain(raw, CAB0_MIN, CAB0_MAX);
+    raw = map(raw, CAB0_MIN, CAB0_MAX, 16383, 0);
+    return constrain(raw, 0, 16383);
+}
+
+analog_t Anlg_Map11(analog_t raw){
+    // make sure that the analog value is between the minimum and maximum
+    raw = constrain(raw, CAB1_MIN, CAB1_MAX);
+    raw = map(raw, CAB1_MIN, CAB1_MAX, 16383, 0);
     return constrain(raw, 0, 16383);
 }

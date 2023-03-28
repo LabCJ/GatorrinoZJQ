@@ -118,10 +118,29 @@ if (trigCom == 4){
   comando[sensor] = NOTEOFF;
 }
 
+// Gatilho Principal (Pé-de-Cabrito)
 
+for (byte i=0; i<2; i++){
+  if(cabrito.sensStatus[i] == 1){
+    int val = gatilhos[i+5].getRawValue();
+    cabrito.atualize(i, val);
+  }
+}
 
+byte trigCom2 = cabrito.execute();
+byte sensor2 = (byte(cabrito.sensorAtivo) + 5); // É bom ficar de olho aqui.
+gatilho[sensor2] = trigCom2;
 
-// ==== GATILHO CELLO =============================================
+if (trigCom2 == 1){
+  Vel[sensor2] = cabrito.vel;
+  comando[sensor2] = NOTEON;
+}
+
+if (trigCom2 == 4){
+  comando[sensor2] = NOTEOFF;
+}
+
+// ==== GATILHO CELLO ============================================= //Reescrever depois, usando "break" pra testar modo = 0 no começo.
   for (byte m = 0; m<(gatilhosAtivos); m++){
     int PGat = gatilhos[m].getRawValue();
     int li;
